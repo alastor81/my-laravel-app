@@ -17,10 +17,12 @@
                             </div>
                             <hr>
                         @endforeach
-                            <div class="alert alert-@if($score_average > 15.75){{ 'success' }}@elseif($score_average > 10.75 && $score_average <= 16.00){{ 'warning' }}@elseif($score_average <= 11.00){{ 'danger' }}
-                            @endif">
-                                <a  href="/students" class="btn btn-@if($score_average > 15.75){{ 'success' }}@elseif($score_average > 10.75 && $score_average <= 16.00){{ 'warning' }}@elseif($score_average <= 11.00){{ 'danger' }}@endif"> average of your score :  </a> <b class="pull-right">{{ $score_average }}</b>
-                            </div>
+                        <div class="alert alert-@if($score_average > 15.75){{ 'success' }}@elseif($score_average > 10.75 && $score_average <= 16.00){{ 'warning' }}@elseif($score_average <= 11.00){{ 'danger' }}
+                        @endif">
+                            <a href="/students"
+                               class="btn btn-@if($score_average > 15.75){{ 'success' }}@elseif($score_average > 10.75 && $score_average <= 16.00){{ 'warning' }}@elseif($score_average <= 11.00){{ 'danger' }}@endif">
+                                average of your score : </a> <b class="pull-right">{{ $score_average }}</b>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,9 +39,17 @@
                         <form class="form-group" action="{{ route('add-score') }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="st_id" value="{{ $student->id }}">
-                            <p>name of the lesson :   <input class="form-control-static" title="name of the lesson" name="name"></p>
+                            <p>lesson : <select class="form-control-static" title="name of the lesson" name="name">
+                                    @foreach($lesson as $ls)
+                                        <option value="{{ $ls->id }}">{{ $ls->name }}</option>
+                                    @endforeach
+
+                                </select>
+                            </p>
                             <p>score : <input class="form-control-static" name="score"
-                                                   title="the class of the student"></p>
+                                              title="the class of the student" type="number" min="0" max="20"></p>
+                            <p><input type="radio" name="turn" value="1">first turn </p>
+                            <p><input type="radio" name="turn" value="2">second turn </p>
                             <hr>
                             <input type="submit" class="btn btn-primary" value="submit it !">
                         </form>

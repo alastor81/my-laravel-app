@@ -27,9 +27,16 @@
                     <div class="panel-body">
                         <form class="form-group" action="{{ route('create-student') }}" method="post">
                             {{ csrf_field() }}
-                            <p>name :   <input class="form-control-static" title="name of the student" name="name"></p>
-                            <p>class name : <input class="form-control-static" name="class"
-                                                      title="the class of the student"></p>
+                            <p>name : <input class="form-control-static" title="name of the student" name="name">
+                            </p>
+                            <p>class name : <select class="form-control-static" name="class"
+                                                    title="the class of the student">
+                                    @foreach($classrooms as $cl)
+                                        <option value="{{ $cl->id }}"> {{ $cl->name }} </option>
+                                    @endforeach
+                                </select>
+
+                            </p>
                             <hr>
                             <input type="submit" class="btn btn-primary" value="submit it !">
                         </form>

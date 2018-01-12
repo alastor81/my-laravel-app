@@ -2,6 +2,8 @@
 
 namespace myapp\Http\Controllers;
 
+use myapp\Classroom;
+use myapp\Lesson;
 use myapp\Score;
 use myapp\Student;
 use Illuminate\Http\Request;
@@ -16,14 +18,15 @@ class SchoolController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Student $student, User $user, Auth $auth)
+    public function index(User $user)
     {
         $userId = Auth::id();
 //        $student = $user::with('students.scores')->get();
 //        $student = $student->students;
         $student = $user::find($userId)->students;
-        return view('home', compact('student'));
-//        return $student;
+        $classrooms = $user::find($userId)->classrooms;
+        return view('home', compact(['student','classrooms']));
+//        return $classrooms;
     }
 
     public function create(Request $request, User $user, Student $student)
@@ -31,12 +34,12 @@ class SchoolController extends Controller
         $id = Auth::id();
         $user = $user::find($id);
         $student->name = $request->name;
-        $student->class = $request->class;
+        $student->class_id = $request->class;
         $user->students()->save($student);
         return back();
     }
 
-    public function show($id, Student $student, Score $score)
+    public function show($id, Student $student, Score $score,User $user)
     {
         $student = $student::find($id);
         $score_average = 0;
@@ -48,8 +51,8 @@ class SchoolController extends Controller
         if (!$count_of_lesson < 1) {
             $score_average = $score_average / $count_of_lesson;
         }
-
-        return view('student-edition', compact(['student', 'score_average']));
+        $lesson = $user::find(Auth::id())->lessons;
+        return view('student-edition', compact(['student', 'score_average','lesson']));
     }
 
 
@@ -73,8 +76,9 @@ class SchoolController extends Controller
     public function add(Request $request, Student $student, Score $score)
     {
         $student = $student::find($request->st_id);
-        $score->lesson = $request->name;
+        $score->lesson_id = $request->name;
         $score->score = $request->score;
+        $score->turn = $request->turn;
         $student->scores()->save($score);
         return back();
 
@@ -97,12 +101,11 @@ class SchoolController extends Controller
             if (!$count_of_lesson < 1) {
                 $score_average = $score_average / $count_of_lesson;
                 $all_average["$people->name"] = "$score_average";
-                $names["$score_average"] = "$people->name";
 //                $final_average = array_add($all_average,"$people->id","$score_average");
             }
         }
 //        $all_average = ksort($all_average);
-        return view('status', compact(['all_average', 'student', 'names']));
+        return view('status', compact(['all_average', 'student']));
 //        return $all_average;
     }
 
@@ -121,14 +124,47 @@ class SchoolController extends Controller
         return back();
     }
 
-    public function create_pdf($id,Student $student,PDF $pdf)
+    public function create_pdf($id, Student $student, PDF $pdf)
     {
         $student = $student::with('scores')->find($id);
         $score = $student->scores->toArray();
 //        return view('layouts.pdf',compact(['student','score']));
 //        return $student->scores;
-        $pdf = PDF::loadView('layouts.pdf', compact(['student','score']));
+        $pdf = PDF::loadView('layouts.pdf', compact(['student', 'score']));
         return $pdf->download('karname.pdf');
+    }
+
+    public function create_class_shown(User $user)
+    {
+        $user = $user::find(Auth::id());
+        $class = $user->classrooms;
+        return view('create-class', compact('class'));
+    }
+
+    public function create_class(Request $request,User $user,Classroom $classroom)
+    {
+        $id = Auth::id();
+        $user = $user::find($id);
+        $classroom->name = $request->name;
+        $user->classrooms()->save($classroom);
+        return back();
+    }
+
+    public function show_lessons(User $user)
+    {
+        $user = $user::find(Auth::id());
+        $lesson = $user->lessons;
+//        return $lesson;
+        return view('add-lesson', compact('lesson'));
+    }
+
+    public function add_lesson(Request $request,User $user,Lesson $lesson)
+    {
+        $id = Auth::id();
+        $user = $user::find($id);
+        $lesson->name = $request->name;
+        $user->lessons()->save($lesson);
+        return back();
     }
 
     public function test(User $user)

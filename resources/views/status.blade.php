@@ -8,26 +8,26 @@
                         status of the students' average :
                     </div>
                     <div class="panel-body">
-                        @foreach($all_average as $average)
+                        @foreach($all_average as $average => $sc)
                             <div class="progress">
-                                @if($average*5 > 75)
+                                @if($sc*5 > 75)
                                     <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
                                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                         style="width:{{ $average*5 }}%">
-                                        {{ $names["$average"] }} : {{ $average }}%
+                                         style="width:{{ $sc*5 }}%">
+                                        {{ $average }} : {{ $sc }}
                                     </div>
 
-                                @elseif($average*5 > 50)
+                                @elseif($sc*5 > 50)
                                     <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
                                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                         style="width:{{ $average*5 }}%">
-                                        {{ $names["$average"] }} : {{ $average }}%
+                                         style="width:{{ $sc*5 }}%">
+                                        {{ $average }} : {{ $sc }}
                                     </div>
-                                @elseif($average*5 < 50)
+                                @elseif($sc*5 < 50)
                                     <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar"
                                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                         style="width:{{ $average*5 }}%">
-                                        {{ $names["$average"] }} : {{ $average }}%
+                                         style="width:{{ $sc*5 }}%">
+                                        {{ $average }} : {{ $sc }}
                                     </div>
                                 @endif
                             </div>

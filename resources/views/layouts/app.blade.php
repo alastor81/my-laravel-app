@@ -257,19 +257,19 @@
                                     <a href="#" data-toggle="collapse" data-target="#toggleDemo2"
                                        data-parent="#sidenav01"
                                        class="collapsed">
-                                        <span class="glyphicon glyphicon-inbox"></span> Submenu 2 <span
+                                        <span class="glyphicon glyphicon-inbox"></span> lessons managing <span
                                                 class="caret pull-right"></span>
                                     </a>
                                     <div class="collapse" id="toggleDemo2" style="height: 0px;">
                                         <ul class="nav nav-list">
-                                            <li><a href="#">Submenu2.1</a></li>
+                                            <li><a href="{{ route('add_lesson_form') }}">add a lesson</a></li>
                                             <li><a href="#">Submenu2.2</a></li>
                                             <li><a href="#">Submenu2.3</a></li>
                                         </ul>
                                     </div>
                                 </li><?php $c = new User;
                                 $c = $c->find(\Illuminate\Support\Facades\Auth::id())->students;?>
-                                <li><a href="#"><span class="glyphicon glyphicon-lock"></span> Normalmenu</a></li>
+                                <li><a href="{{ route('create_class') }}"><span class="glyphicon glyphicon-lock"></span> add a class</a></li>
                                 <li><a href="{{ route('home') }}"><span class="glyphicon glyphicon-user"></span>
                                         students
                                         <span

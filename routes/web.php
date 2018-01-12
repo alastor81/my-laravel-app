@@ -27,3 +27,7 @@ Route::get('/students','SchoolController@average')->name('show-students');
 Route::get('/test','SchoolController@test');
 Route::get('/show-all','SchoolController@show_all')->name('profiles');
 Route::get('/create-pdf/{id}','SchoolController@create_pdf')->name('pdf');
+Route::get('/create-class', 'SchoolController@create_class_shown')->name('create_class');
+Route::post('/c-class', 'SchoolController@create_class')->name('c_class');
+Route::get('/show-lessons','SchoolController@show_lessons')->name('add_lesson_form');
+Route::post('/add-lesson','SchoolController@add_lesson')->name('add_lesson');
