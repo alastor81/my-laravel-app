@@ -2,6 +2,7 @@
 
 namespace myapp\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use myapp\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -19,13 +20,12 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+//    protected $redirectTo = "/";
 
     /**
      * Create a new controller instance.
@@ -36,4 +36,28 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    use AuthenticatesUsers;
+
+    // ...
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     *
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        if($user->type == "Manager") {
+            return redirect('/');
+        } elseif ($user->type == "Student") {
+            return redirect('/studentarea');
+        }
+    }
+
+    // ...
+
 }

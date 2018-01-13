@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -13,7 +12,7 @@
                         @foreach($student->scores as $sc)
                             <div class="alert alert-@if($sc->score > 15.75){{ 'success' }}@elseif($sc->score > 10.75 && $sc->score <= 16.00){{ 'warning' }}@elseif($sc->score <= 11.00){{ 'danger' }}
                             @endif">
-                                {{ $sc->lesson }} score : <b class="pull-right">{{ $sc->score }}</b>
+                                {{ \myapp\Lesson::find($sc->lesson_id)->name }} score : <b class="pull-right">{{ $sc->score }}</b>
                             </div>
                             <hr>
                         @endforeach
